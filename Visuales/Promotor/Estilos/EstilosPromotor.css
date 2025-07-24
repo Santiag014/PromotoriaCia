@@ -1,0 +1,731 @@
+@import url('https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+/* Variables de color */
+:root {
+  --color-azul: #004D9D;
+  --color-naranja: #FF671F;
+  --color-negro-transparente: rgba(0, 0, 0, 0.8);
+  --color-naranja-transparente: rgba(255, 103, 31, 0.8);
+  --color-naranja-claro: rgba(255, 167, 81, 0.8);
+  --color-naranja-oscuro: rgba(204, 82, 0, 0.8);
+  --color-negro-claro: rgba(50, 50, 50, 0.8);
+  --color-negro-oscuro: rgba(0, 0, 0, 0.8);
+}
+
+/*----------Estilos Generales Plantilla MiApp----------*/
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Kanit", serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+  background-attachment: fixed;
+  overflow: hidden;
+  background-color: rgba(169, 169, 169, 1),;
+}
+
+/*----------Estilos Especificos Plantilla MiApp----------*/
+.GridContanier {
+    display: grid;
+    grid-template-areas:
+      "GridHeaderApp GridHeaderApp"
+      "GridContentApp GridContentApp";
+    grid-template-columns: 200px 1fr; /* Esto permanece igual */
+    grid-template-rows: 50px 1fr; /* Esto permanece igual */
+    padding: 5px 10px;
+    gap: 5px;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    box-sizing: border-box;
+    /* margin-top: 5px; */
+}
+
+/* Estilo para el contenedor general */
+.GridHeaderApp {
+  grid-area: GridHeaderApp;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-radius: 8px;
+  margin-top: 10px;
+  background-color: rgba(195, 195, 195, 0.995);
+  box-shadow: 0px 4px 8px var(--color-negro-claro); /* Sombra suave y difusa */
+}
+
+/* Parte Del Contenedor */
+.GridContentApp {
+  grid-area: GridContentApp;
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: row; /* Asegurar que el contenedor esté en columna */
+  justify-content: center;
+  align-items: center;
+  position: relative; /* Necesario para posicionar el fondo de manera absoluta */
+  height: 100%;
+  width: 100%;
+  gap: 10px;
+  background-color: rgb(233,233,233, 0.1);
+  margin-top: 2px;
+}
+
+.LogoDashboard {
+  display: flex;
+  align-items: center;
+}
+
+.LogoDashboard img {
+  margin: 0px 5px 0px 10px; 
+  width: 35%;
+  height: auto;
+}
+
+.ModulosDashUser {
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  margin-right: 15px;
+  color: #000;
+  cursor: pointer;
+}
+
+.ModulosDashUser img{
+  margin: 0px 8px 0px 10px; 
+  width: 25px;
+  height: 25px;
+}
+
+.ContenedorMapa #map {
+  width: 100%;
+  height: 80%;
+  border-radius: 8px;
+  border: 1px solid #c8c8c8;
+  background-color: rgb(134,188,230,0.95);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ContenedorMapa #map iframe {
+  border-radius: 8px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.ContenedorSolicitudes {
+  width: 15%;
+  height: 92%;
+  padding: 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.ContenedorFormulario {
+  width: 50%;
+  height: 95%;
+  border-radius: 8px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  position: relative;
+}
+
+.ContenedorMapa {
+  width: 35%;
+  height: 95%;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ContenedorFormulario::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  
+  background-color: rgba(238, 238, 238, 0.1); /* Fondo semitransparente para que la sombra sea visible */
+  background-size: 71% 70%;
+  background-image: url('../../../Media/Imagenes/PosibleFondoBull.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: saturate(0) drop-shadow(2px 5px 5px var(--color-negro-oscuro)); /* Aplica la saturación y la sombra */
+  z-index: -1;
+}
+
+
+.form-group {
+  flex: 1;
+  margin-right: 5px;
+}
+
+.form-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0px;
+}
+
+form {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%; 
+  display: flex;
+  flex-direction: column;
+}
+
+.FormularioImplementaciones{
+  width: 100%;
+  height: 87%;
+  display: block;
+  padding: 0px 15px 0px 15px;
+  overflow: auto;
+}
+
+.ParteSuperiorFormualario{
+  width: 100%;
+  height: 10%;
+  margin-bottom: 5px;
+  display: flex;
+  align-items:center;
+  justify-content:space-around;
+  flex-direction: row;
+}
+
+.InformacionFormulario{
+  width: 80%;
+  height: 100%;
+  font-weight:600;
+  display: flex;
+  align-items:center;
+  flex-direction: row;
+  justify-content:flex-start;
+  padding-left: 10px;
+}
+
+.BotonesInteraccion {
+  width: 25%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-direction: row;
+  padding-right: 10px;
+}
+
+.BotonesInteraccion > div {
+  margin-left: auto;
+}
+
+.BotonesInteraccion_2 {
+  width: 100%;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-direction: row;
+}
+
+.BotonesInteraccion_2 > div {
+  margin-left: auto;
+}
+
+.BotonesFormulario {
+  width: 40px; 
+  height: 35px;
+  margin-right: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Centra el ícono cuando no hay texto */
+  padding: 0; /* Sin padding para ajustarse solo al ícono inicialmente */
+  margin-bottom: 10px;
+  border-radius: 5px;
+  box-shadow: 1px 1px 10px #64a9dd;
+  border: none;
+  transition: background-color 1s ease, width 1s ease, padding 1s ease; /* Transiciones suaves */
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  font-size: 13px;
+  font-weight: 500;
+  background-color: rgb(85,146,228,0.85);
+}
+
+.BotonesFormulario img {
+  margin-right: 0; /* Sin margen inicialmente para que el ícono esté centrado */
+  transition: margin-right 1.5s ease; /* Transición para el margen del ícono */
+  width: 20px;
+  height: 20px;
+}
+
+.BotonesFormulario span {
+  margin-left: 8px; /* Espacio entre el ícono y el texto */
+  opacity: 0; /* Oculta el texto inicialmente */
+  white-space: nowrap; /* Evita que el texto se rompa en varias líneas */
+  transition: opacity 2.5s ease; /* Transición suave para la opacidad */
+  color: transparent; /* Mantén el color transparente para ocultar */
+  display: none; /* Oculta el texto inicialmente */
+  color: black;
+  font-weight: 400;
+}
+
+.BotonesFormulario:hover, .BotonesFormulario:focus {
+  background-color: var(--color-naranja-oscuro);
+  padding: 0 10px; /* Ajusta el padding al pasar el mouse o al hacer clic */
+  width: auto; /* Permite que el botón crezca para el texto */
+  box-shadow: 1px 1px 10px rgb(41,118,222, 0.85);
+  background-color: rgb(41,118,222, 0.95);
+}
+
+.BotonesFormulario:hover span, .BotonesFormulario:focus span {
+  opacity: 1; /* Muestra el texto */
+  color: #000; /* Establece el color del texto */
+  display: inline-block; /* Mostramos el texto cuando se pasa el mouse */
+}
+
+.BotonesFormulario:hover svg, .BotonesFormulario:focus svg {
+  margin-right: 0px; /* Añade margen al ícono cuando el texto esté visible */
+}
+
+.GridContanier p{
+  margin-bottom: 10px;
+  font-style: italic;
+}
+
+.GridFooterApp p{
+  color: #fff;
+  font-size: 12px;
+}
+
+input[type="text"], 
+input[type="email"], 
+input[type="date"], 
+input[type="number"], 
+input[type="datetime-local"],
+select {
+  padding: 7px;
+  margin-bottom: 15px;
+  border: 1px solid rgba(100, 100, 100, 0.8);
+  border-radius: 5px;
+  width: 100%;
+  box-sizing: border-box;
+  background-color: rgb(245, 245, 245);
+  font-family: 'Open Sans', sans-serif; /* Establecer la familia de fuentes */
+  color: #000;
+  font-size: 11.5px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input[type="time"]{
+  padding: 5px;
+  margin-bottom: 15px;
+  border: 1px solid rgba(100, 100, 100, 0.8);
+  border-radius: 5px;
+  width: 100%;
+  box-sizing: border-box;
+  background-color: rgb(245, 245, 245);
+  font-family: 'Open Sans', sans-serif; /* Establecer la familia de fuentes */
+  color: #000;
+  font-size: 10.5px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input[type="file"]{
+  margin-bottom: 15px;
+  border: 1px solid rgba(100, 100, 100, 0.8);
+  border-radius: 5px;
+  width: 100%;
+  box-sizing: border-box;
+  background-color: rgb(245, 245, 245);
+  font-family: 'Open Sans', sans-serif; /* Establecer la familia de fuentes */
+  color: #000;
+  font-size: 11.5px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input[type="file"]::-webkit-file-upload-button {
+  background-color:  rgb(255,120,57,0.90);
+  color: #000;
+  font-weight: 400;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  border: none;
+  padding: 6px;
+  cursor: pointer;
+  font-size: 10px;
+  font-family: "Kanit", serif;
+  margin-right: 5px;
+}
+
+input[type="file"]::placeholder {
+  color: #000000;
+  font-weight: 100;
+  font-size: 10.5px;
+}
+
+input[type="text"]:focus, 
+input[type="email"]:focus, 
+input[type="datetime-local"]:focus, 
+input[type="number"]:focus, 
+input[type="password"]:focus, 
+input[type="file"]:focus, 
+select:focus {
+    outline: none;
+    border-color: #000;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
+}
+
+/* Específico para el input con id="Implementador" */
+#implementador::placeholder {
+  color: #000000;
+  font-weight: 100;
+  font-size: 10.5px;
+}
+
+
+/* Placeholder para inputs de texto */
+input[type="text"]::placeholder {
+  color: #625c5c;
+  font-weight: 100;
+  font-size: 10.5px;
+}
+
+input[type="datetime-local"] {
+  font-size: 11px; /* Ajusta el tamaño del texto */
+  color: rgb(56, 55, 55); /* Cambiar el color del texto */
+  font-weight: 500; /* Cambiar el grosor del texto */
+}
+
+label {
+  font-size: 13.5px;
+  font-weight: 500;
+  color: #000;
+}
+
+.number-icon .number {
+  background-color: white;
+  border-radius: 50%;
+  box-shadow: 0px 4px 8px var(--color-negro-claro); /* Sombra suave y difusa */
+  padding: 2px 5px;
+  font-size: 12px;
+  font-weight: bold;
+  color: black;
+  text-align: center;
+  position: absolute;
+  top: -20px; /* Ajustar para que aparezca encima del marcador */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+}
+
+.implementacion-item{
+  border: none;
+  border-radius: 10px;
+  padding: 10px; 
+  margin-bottom: 5px; 
+  cursor: pointer;
+  width: auto;
+  transition: background-color 0.3s ease; /* Suaviza la transición del color de fondo */
+  background-color: rgb(238, 238, 238); /* Color de fondo para los elementos impares */
+  display: block;
+}
+
+.implementacion-item div {
+  margin: -3px 0; /* Reducir el margen entre los elementos */
+  padding: 0; /* Eliminar el padding */
+}
+
+.implementacion-item.selected{
+  background-color: rgb(0,65,128,0.1); /* Color de fondo para el elemento seleccionado */
+}
+
+.Lista ul {
+  list-style-type: none; /* Elimina las viñetas */
+  padding: 0; /* Elimina el padding por defecto */
+  margin: 0; /* Elimina el margen por defecto */
+}
+
+.Lista ul li .nombreDiv {
+  font-size: 13px; /* Ajustar el tamaño de la letra del primer div (nombreDiv) */
+  font-weight: 500;
+}
+
+.Lista ul li .nitDiv,
+.Lista ul li .fechaDiv,
+.Lista ul li .bodegaDiv{
+  font-size: 12px; /* Ajustar el tamaño de la letra de los divs */
+  margin-right: 5px;
+  width: 180px;
+  font-weight: 200;
+}
+
+.Lista ul li .nombreDiv,
+.Lista ul li .estadoDiv {
+  font-size: 13px; /* Ajustar el tamaño de la letra de los divs */
+  margin-right: 5px;
+  width: 180px;
+  font-weight: 600;
+}
+
+.MostrarListaDesplegable{
+  width: 100%;
+  height: 92%;
+  border-radius: 10px;
+  border-radius: 8px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  padding: 10px 5px;
+  background-color: rgba(195, 195, 195, 0.995);
+  box-shadow: 1px 1px 2px 1px #d1d0d0;
+  overflow: auto;
+}
+
+.NombreUser{
+  width: 100%;
+  height: 4%;
+  margin-bottom: 12px;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(134,188,230,0.95);
+  box-shadow: 1px 1px 2px 1px #7fb0e1;
+}
+
+.NombreUser .Nombre, .NombreUser .p{
+  font-weight: 500;
+  margin: 0px 0px 0px 10px;
+  padding: 0px;
+  font-size: 11px;
+}
+
+.NombreUser .Rol{
+  font-weight: 200;
+  margin: 0px 0px 0px 10px;
+  padding: 0px;
+  font-size: 11px;
+}
+
+.leaflet-routing-container {
+  background-color: white !important;
+  font-size: 10px !important;
+  max-width: 200px !important;
+}
+.leaflet-routing-container-hide {
+  display: none;
+}
+
+/* Estilo general para la barra de desplazamiento */
+*::-webkit-scrollbar {
+  width: 8px; /* Ancho de la barra vertical */
+  height: 8px; /* Altura de la barra horizontal */
+}
+
+/* Estilo para el pulgar (scroll thumb) */
+*::-webkit-scrollbar-thumb {
+  background-color: rgba(103, 101, 100, 0.75); /* Color del pulgar */
+  border-radius: 6px; /* Bordes redondeados del pulgar */
+  border: 2px solid transparent; /* Espaciado interno opcional */
+  background-clip: padding-box; /* Asegura que el borde sea visible */
+}
+
+/* Estilo para el área de pista (scroll track) */
+*::-webkit-scrollbar-track {
+  background-color: transparent; /* Fondo de la pista */
+}
+
+/* Opcional: Cambiar el color del pulgar al pasar el cursor */
+*::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(103, 101, 100, 0.95); /* Color más oscuro en hover */
+}
+
+.producto-input{
+  background-color: rgb(255,120,57,0.90);
+}
+
+.btn-small {
+    padding: 5px 10px;
+    margin: 5px;
+    font-size: 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.btn-small:hover {
+    background-color: #0056b3;
+}
+
+.loading-spinner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.spinner {
+    border: 8px solid rgba(255, 255, 255, 0.3);
+    border-top: 8px solid #fff;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@media (max-width: 768px) {
+  .GridContentApp {
+    flex-direction: column;
+    overflow: hidden; /* Permitir el desplazamiento si el contenido es demasiado grande */
+  }
+
+  .GridHeaderApp, .ContenedorMapa{
+    margin-bottom: 5px;
+  }
+
+  .ContenedorSolicitudes, .ContenedorFormulario, .ContenedorMapa {
+    width: 100%; /* Asegurar que los contenedores ocupen el ancho completo */
+  }
+
+  .ContenedorSolicitudes {
+    height: 22%; /* Ajustar la altura al 15% */
+  }
+
+  .NombreUser{
+    height: 20%;
+    margin-top: 10px;
+    margin-bottom: 0px;
+  }
+
+  .ContenedorFormulario {
+    height: 40%; /* Ajustar la altura al 40% */
+    overflow: hidden;
+  }
+
+  .ContenedorMapa {
+    height: 35%; /* Ajustar la altura al 45% */
+  }
+
+  .ContenedorMapa #map {
+    height: 100%; /* Ajustar la altura del mapa para pantallas pequeñas */
+  }
+
+  .ContenedorMapa #map iframe{
+    height: 80%; /* Ajustar la altura del mapa para pantallas pequeñas */
+  }
+
+  .Lista ul {
+    display: flex; /* Hacer que los elementos se generen horizontalmente */
+    flex-direction: row;
+    overflow-x: auto; /* Permitir el desplazamiento horizontal */
+    font-size: 10px;
+  }
+
+  .Lista ul li {
+    font-size: 10px;
+  }
+
+  .Lista ul li div {
+    margin-right: 5px;
+  }
+
+  .Lista ul li .nitDiv,
+  .Lista ul li .fechaDiv,
+  .Lista ul li .bodegaDiv{
+    font-size: 11px; /* Ajustar el tamaño de la letra de los divs */
+    margin-right: 5px;
+    width: 180px;
+    font-weight: 200;
+  }
+  
+  .Lista ul li .nombreDiv,
+  .Lista ul li .estadoDiv {
+    font-size: 12px; /* Ajustar el tamaño de la letra de los divs */
+    margin-right: 5px;
+    width: 180px;
+    font-weight: 600;
+  }
+
+  .InputFiltrar {
+    display: none; /* Ocultar el div de InputFiltrar */
+  }
+  
+  .ParteSuperiorFormualario{
+    margin-top: 15px;
+    margin-bottom: 0px;
+  }
+
+  .InformacionFormulario h3{
+    font-size: 16px;
+  }
+
+  .form-group {
+    flex: 1;
+    margin-right: 5px;
+    flex-direction: column;
+    margin-bottom: -10px;
+  }
+  
+  .form-row {
+    display: flex;
+    flex-direction: column; /* Asegurar que los inputs queden uno por fila */
+    justify-content: space-between;
+  }
+
+  .foto_acta{
+    margin-bottom: 10px;
+  }
+
+  .producto-input{
+    background-color: rgb(255,120,57,0.90);
+  }
+
+  .BotonesFormulario img {
+    margin-right: 0; /* Sin margen inicialmente para que el ícono esté centrado */
+    transition: margin-right 1.5s ease; /* Transición para el margen del ícono */
+    width: 15px;
+    height: 15px;
+  }
+
+  .BotonesFormulario{
+    width: 35px;
+    height: 30px;
+  }
+
+  .LogoDashboard img{
+    width: 40%;
+    height: auto;
+  }
+
+  .ModulosDashUser img{
+    width: 20px;
+    height: 20px;
+  }
+
+  .ModulosDashUser h5{
+    font-size: 12px;
+  }
+
+  .GridFooterApp p{
+    font-size: 8px;
+  }
+}

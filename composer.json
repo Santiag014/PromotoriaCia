@@ -1,0 +1,20 @@
+{
+    "name": "bull/compania",
+    "description": "aplcaitivo promotoria compania",
+    "type": "project",
+    "require": {
+        "phpoffice/phpspreadsheet": "^4.0"
+    },
+    "license": "proprietary",
+    "autoload": {
+        "psr-4": {
+            "Bull\\Compania\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "team data"
+        }
+    ],
+    "minimum-stability": "stable"
+}
