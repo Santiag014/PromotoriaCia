@@ -1,0 +1,310 @@
+@import url('https://fonts.googleapis.com/css2?family=SUSE:wght@100..800&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "SUSE", sans-serif;
+}
+
+body, html { 
+    width: 100%; 
+    height: 100%; 
+    background: linear-gradient(
+        135deg,
+        rgb(180, 200, 220) 0%,   /* Azul suave inicial */
+        rgb(200, 220, 235) 25%,  /* Azul un poco más claro */
+        rgb(245, 220, 220) 50%,  /* Transición hacia un rosado muy suave */
+        rgb(250, 230, 230) 75%,  /* Rojo extremadamente suave */
+        rgb(255, 240, 240) 100%  /* Rojo claro casi blanco */
+    );
+    background-attachment: fixed;
+}  
+
+/*----Estilos Para el Login----*/
+
+/* Contenedor principal que contiene el logo y el formulario */
+.login-container {
+    position: relative;
+    display: flex;
+    min-height: 100vh;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    overflow: hidden;
+    padding: 2rem;
+    background-image: url('../../../Media/Imagenes/fondoLogin.jpeg');
+    background-size: cover;
+    background-position: center;
+}
+
+/* Capa oscura sobre la imagen de fondo */
+.login-container::before {
+    content: ""; 
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1;
+}
+
+/* El contenido del contenedor estará por encima de la capa oscura */
+.login-container > * {
+    position: relative;
+    z-index: 2;
+}
+
+/* Contenedor de la sección del formulario */
+.form-section {
+    background-color: rgba(255, 255, 255, 0.9); /* Blanco con 50% de opacidad */
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(51, 51, 51, 0.5);
+    width: 90%; /* Reducido de 100% */
+    max-width: 380px; /* Reducido de 400px */
+    min-width: 280px; /* Reducido de 300px */
+    min-height: 350px; /* Añadido para aumentar la altura mínima */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-sizing: border-box;
+    z-index: 2;
+}
+
+/* Título de inicio de sesión */
+.inicio-seccion {
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    color: #333;
+    text-align: center;
+    font-size: 1.5rem;
+}
+
+/* Grupo de entrada de los campos */
+.input-group {
+    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.input-group label {
+    color: #000;
+    margin-bottom: 0.5rem;
+    font-size: 14.5px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+/* Unificar estilos para todos los inputs */
+.input-group input[type="email"],
+.input-group input[type="password"] {
+    /* Asegúrate de que estos estilos sean iguales para ambos tipos de input */
+    height: 35px; /* Ajusta según sea necesario */
+
+    border: 1px solid rgba(100, 100, 100, 0.8);
+    border-radius: 5px;
+    width: 100%;
+    box-sizing: border-box;
+    background-color: rgb(245, 245, 245);
+    color: #000;
+    font-size: 13px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input[type="text"]:focus, 
+input[type="email"]:focus, 
+input[type="date"]:focus, 
+input[type="number"]:focus, 
+input[type="password"]:focus, 
+select:focus {
+    outline: none;
+    border-color: #000;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
+}
+
+/* Botón de inicio de sesión */
+.signin-btn {
+    width: 100%; /* El botón ocupa todo el ancho */
+    padding: 0.75rem;
+    background-color: rgb(42,133,204);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    box-sizing: border-box; /* Asegura que no se salga del contenedor */
+
+    margin-top: 6%;
+    margin-bottom: -3%;
+}
+
+.signin-btn:hover {
+    background-color: rgb(35,112,172);
+    box-shadow: 0 0 15px rgb(19,59,90);
+}
+
+/* Mensaje de éxito */
+.success-message {
+    color: green;
+    font-size: 0.875rem;
+    margin-top: 1rem;
+    text-align: center;
+}
+
+/* Estilos del cuadro de alerta personalizado */
+.custom-alert {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #f8f8f8;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    z-index: 1000;
+    display: none;
+}
+
+.custom-alert h3 {
+    margin-top: 0;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.custom-alert p {
+    color: #666;
+}
+
+.custom-alert button {
+    width: 25%;
+    height: 35px;
+    background-color: #ff7a22;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    float: right;
+    margin-top: 5px;
+}
+
+.custom-alert button:hover {
+    background-color: #e86a12;
+    box-shadow: 0 0 15px #bb672b;
+}
+
+.blur-background {
+    filter: blur(5px);
+    transition: filter 0.3s ease;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    z-index: 999;
+}
+
+/* Estilos Responsivos */
+@media (max-width: 768px) {
+    .login-container {
+        flex-direction: column;
+        padding: 1rem;
+    }
+
+    .logo-container, .form-section {
+        width: 90vw;
+        margin: 1rem 0;
+    }
+}
+
+.alert {
+    padding: 10px;
+    background-color: #f44336;
+    color: white;
+    margin-bottom: 15px;
+    border-radius: 4px;
+    display: none;
+    font-weight: 200;
+    font-size: 13px;
+}
+.custom-alert {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #f8f8f8;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    z-index: 1000;
+    display: none;
+}
+.custom-alert h3 {
+    margin-top: 0;
+    color: #333;
+    margin-bottom: 5px;
+}
+.custom-alert p {
+    color: #666;
+}
+.custom-alert button {
+        width: 25%;
+        height: 35px;
+        background-color: #ff7a22;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 1rem;
+        float: right;
+        margin-top: 5px;
+}
+.custom-alert button:hover{
+    background-color: #e86a12;
+    box-shadow: 0 0 15px #bb672b;
+}
+.blur-background {
+    filter: blur(5px);
+    transition: filter 0.3s ease;
+}
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    z-index: 999;
+}
+
+.logo-container{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1%;
+}
+
+.LogoLogin{
+    width: 60%;
+    height: auto;
+    margin-bottom: 3.5%;
+}

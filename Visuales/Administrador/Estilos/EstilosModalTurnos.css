@@ -1,0 +1,234 @@
+/* Estilos mejorados para el formulario de turnos */
+.modal-content {
+  background-color: white;
+  margin: 5% auto;
+  width: 80%;
+  max-width: 800px; /* Reducido de 900px */
+  border-radius: 10px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.8);
+  animation: modalFadeIn 0.3s ease-out;
+  overflow: hidden; /* Evita el desbordamiento */
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px; /* Reducido de 18px 25px */
+  background: linear-gradient(to right, #1e3c72, #2a5298);
+  color: white;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 20px; /* Reducido de 22px */
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.modal-body {
+  padding: 15px 20px; /* Reducido de 25px */
+  max-height: calc(100vh - 200px);
+  overflow-y: auto;
+}
+
+/* Formulario de turnos */
+.turno-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px; /* Reducido de 20px */
+}
+
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px; /* Reducido de 25px */
+  margin-bottom: 0; /* Eliminado margen inferior */
+}
+
+.form-group {
+  flex: 1;
+  min-width: 200px; /* Reducido de 250px */
+  margin-bottom: 10px; /* Reducido de 15px */
+}
+
+.form-group.full-width {
+  flex-basis: 100%;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px; /* Reducido de 8px */
+  font-weight: 500; /* Menos bold */
+  color: #333;
+  font-size: 13px; /* Reducido de 14px */
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 8px 10px; /* Reducido de 12px */
+  border: 1px solid #c9d6e2;
+  border-radius: 5px; /* Reducido de 6px */
+  font-size: 13px; /* Reducido de 14px */
+  font-family: inherit;
+  background-color: #fff;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  height: 34px; /* Altura fija para uniformidad */
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: #4a89dc;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(74, 137, 220, 0.15); /* Reducido de 3px */
+}
+
+.form-group input[readonly] {
+  background-color: #f7f9fc;
+  cursor: not-allowed;
+  border: 1px solid #dbe3ec;
+}
+
+.form-group textarea {
+  height: 70px; /* Altura específica para textareas */
+  resize: vertical;
+}
+
+/* Estilos para los Select2 */
+.select2-container--default .select2-selection--single {
+  height: 34px !important; /* Reducido de 42px */
+  padding: 4px !important; /* Reducido de 6px */
+  border: 1px solid #c9d6e2 !important;
+  border-radius: 5px !important; /* Reducido de 6px */
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+  height: 32px !important; /* Reducido de 40px */
+}
+
+.select2-container--default .select2-results__option {
+  padding: 6px 10px !important; /* Reducido de 8px 12px */
+  font-size: 13px !important; /* Reducido de 14px */
+}
+
+.select2-container--default .select2-search--dropdown .select2-search__field {
+  padding: 6px !important; /* Reducido de 8px */
+  border-radius: 4px !important;
+}
+
+.select2-dropdown {
+  border-color: #c9d6e2 !important;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.1) !important; /* Reducido de 0 4px 8px */
+}
+
+.select2-results__option {
+  font-size: 13px !important;
+}
+
+/* Container para la ubicación */
+.ubicacion-container {
+  background-color: #f7f9fc;
+  padding: 8px 10px; /* Reducido de 12px */
+  border: 1px solid #dbe3ec;
+  border-radius: 5px; /* Reducido de 6px */
+  min-height: 34px; /* Reducido de 42px */
+  display: flex;
+  align-items: center;
+}
+
+.map-link {
+  display: flex;
+  align-items: center;
+  color: #4a89dc;
+  text-decoration: none;
+  gap: 5px; /* Reducido de 6px */
+  font-size: 13px; /* Añadido tamaño de fuente */
+}
+
+.map-link:hover {
+  text-decoration: underline;
+}
+
+/* Animación para destacar campos actualizados */
+.campo-actualizado {
+  animation: highlightField 1s ease-out;
+}
+
+@keyframes highlightField {
+  0% {
+    background-color: rgba(74, 137, 220, 0.3);
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
+.error-texto {
+  color: #e74c3c;
+  font-size: 12px; /* Reducido de 13px */
+  margin-top: 3px;
+  display: block;
+}
+
+.no-disponible {
+  color: #95a5a6;
+  font-style: italic;
+  font-size: 12px; /* Reducido de 13px */
+}
+
+/* Botones del formulario */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px; /* Reducido de 15px */
+  margin-top: 15px; /* Reducido de 20px */
+  padding-top: 15px; /* Reducido de 20px */
+  border-top: 1px solid #e9ecef;
+}
+
+.btn-guardar {
+  display: flex;
+  align-items: center;
+  gap: 6px; /* Reducido de 8px */
+  padding: 8px 16px; /* Reducido de 12px 20px */
+  background: linear-gradient(to right, #1e3c72, #2a5298);
+  color: white;
+  border: none;
+  border-radius: 5px; /* Reducido de 6px */
+  font-size: 14px; /* Reducido de 15px */
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-guardar:hover {
+  background: linear-gradient(to right, #2a5298, #1e3c72);
+  transform: translateY(-1px); /* Reducido el efecto */
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra más sutil */
+}
+
+.btn-guardar img {
+  width: 16px;
+  height: 16px;
+}
+
+.btn-cancelar {
+  padding: 8px 16px; /* Reducido de 12px 20px */
+  background-color: #e9ecef;
+  color: #495057;
+  border: none;
+  border-radius: 5px; /* Reducido de 6px */
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-cancelar:hover {
+  background-color: #dee2e6;
+}

@@ -1,0 +1,745 @@
+/* Estilos para la tabla y filas clickeables */
+.data-table .fila-clickeable {
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.data-table .fila-clickeable:hover {
+    background-color: #f0f7ff;
+}
+
+/* Estilos para los botones de ubicación */
+.location-btn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 4px 8px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    font-size: 12px;
+}
+
+.location-btn:hover {
+    background-color: #0056b3;
+}
+
+/* Estilos para los estados */
+.estado {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+    text-align: center;
+    min-width: 90px;
+}
+
+.estado-aceptado {
+    background-color: #28a745;
+    color: white;
+}
+
+.estado-denegado {
+    background-color: #dc3545;
+    color: white;
+}
+
+.estado-pendiente {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+/* Estilos para los estados de ventas */
+.ventas-estado {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+    text-align: center;
+}
+
+.ventas-si {
+    background-color: #28a745;
+    color: white;
+}
+
+.ventas-no {
+    background-color: #dc3545;
+    color: white;
+}
+
+/* Estilos para el popup de detalles */
+#detallePopup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+#detallePopup .modal-content {
+    position: relative;
+    background-color: #fff;
+    margin: 50px auto;
+    padding: 0;
+    border-radius: 8px;
+    width: 80%;
+    max-width: 800px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+#detallePopup .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    color: white;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+#detallePopup .modal-header h2 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 500;
+}
+
+#detallePopup .close {
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#detallePopup .modal-body {
+    padding: 20px;
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+#detallePopup .modal-footer {
+    padding: 15px 20px;
+    display: flex;
+    justify-content: flex-end;
+    border-top: 1px solid #e9ecef;
+}
+
+/* Estilos para la cuadrícula de información */
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.info-item {
+    margin-bottom: 10px;
+}
+
+.info-item strong {
+    display: block;
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+.info-item span {
+    display: block;
+    font-size: 15px;
+    color: #212529;
+}
+
+.info-item.full-width {
+    grid-column: 1 / -1;
+}
+
+.observaciones-text {
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-radius: 4px;
+    margin-top: 5px;
+    margin-bottom: 0;
+    white-space: pre-line;
+    font-size: 14px;
+    color: #495057;
+}
+
+/* Estilos para el contenedor de ubicación */
+.ubicacion-container {
+    /* margin-top: 20px; */
+    text-align: center;
+}
+
+.btn-ubicacion {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 15px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.btn-ubicacion:hover {
+    background-color: #0056b3;
+}
+
+/* Estilos para botones de acción */
+.btn-action {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    font-size: 14px;
+    margin-left: 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.btn-action.ventas {
+    background-color: #28a745;
+    color: white;
+}
+
+.btn-action.ventas:hover {
+    background-color: #218838;
+}
+
+.btn-action.cierre {
+    background-color: #007bff;
+    color: white;
+}
+
+.btn-action.cierre:hover {
+    background-color: #0056b3;
+}
+
+.btn-action.cerrar {
+    background-color: #6c757d;
+    color: white;
+}
+
+.btn-action.cerrar:hover {
+    background-color: #5a6268;
+}
+
+/* === ESTILOS MEJORADOS PARA POPUPS DE VENTAS Y CIERRES === */
+
+/* Contenedor principal de tabla de ventas */
+.tabla-ventas-container {
+    overflow-x: auto;
+    margin-top: 20px;
+    margin-bottom: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    background: #fff;
+}
+
+/* Tabla de ventas moderna */
+.tabla-ventas {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-bottom: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.tabla-ventas th, 
+.tabla-ventas td {
+    padding: 14px 16px;
+    text-align: left;
+    border-bottom: 1px solid rgba(220, 225, 232, 0.6);
+    transition: all 0.3s ease;
+}
+
+/* Header de tabla mejorado */
+.tabla-ventas th {
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.tabla-ventas th:first-child {
+    border-top-left-radius: 12px;
+}
+
+.tabla-ventas th:last-child {
+    border-top-right-radius: 12px;
+}
+
+/* Filas del cuerpo de la tabla */
+.tabla-ventas tbody tr {
+    background-color: #ffffff;
+    transition: all 0.3s ease;
+}
+
+.tabla-ventas tbody tr:nth-child(even) {
+    background-color: #f8fafe;
+}
+
+.tabla-ventas tbody tr:hover {
+    background: linear-gradient(90deg, #f0f7ff 0%, #e3f2fd 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(30, 60, 114, 0.15);
+}
+
+.tabla-ventas tbody td {
+    font-size: 14px;
+    color: #2c3e50;
+    font-weight: 400;
+}
+
+/* Columnas numéricas */
+.tabla-ventas td[style*="text-align:right"] {
+    font-weight: 600;
+    color: #1e3c72;
+}
+
+/* Fila de totales mejorada */
+.tabla-ventas tfoot tr {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    font-weight: 700;
+    font-size: 15px;
+    border-top: 3px solid #1e3c72;
+}
+
+.tabla-ventas tfoot td {
+    padding: 16px;
+    color: #1e3c72;
+    border-bottom: none;
+}
+
+.tabla-ventas tfoot .total-label {
+    text-align: right;
+    font-size: 16px;
+}
+
+.tabla-ventas tfoot .total-valor {
+    color: #28a745;
+    font-size: 16px;
+    font-weight: 800;
+}
+
+/* Estilos para la sección de comentarios */
+.comentarios-ventas {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 4px;
+    margin-top: 20px;
+}
+
+.comentarios-ventas h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 16px;
+    color: #495057;
+}
+
+.comentarios-ventas p {
+    margin: 0;
+    white-space: pre-line;
+    color: #212529;
+}
+
+/* Animaciones y transiciones */
+.campo-actualizado {
+    animation: highlightField 1s ease;
+}
+
+@keyframes highlightField {
+    0% {
+        background-color: rgba(255, 255, 190, 0.5);
+    }
+    100% {
+        background-color: transparent;
+    }
+}
+
+/* === ESTILOS ADICIONALES PARA POPUPS MEJORADOS === */
+
+/* Popup de ventas y cierres - overlay */
+#popupVentasAdmin,
+#popupCierreAdmin {
+    backdrop-filter: blur(4px) !important;
+    animation: fadeInOverlay 0.3s ease-out !important;
+}
+
+@keyframes fadeInOverlay {
+    from {
+        opacity: 0;
+        backdrop-filter: blur(0px);
+    }
+    to {
+        opacity: 1;
+        backdrop-filter: blur(4px);
+    }
+}
+
+/* Contenedor del popup mejorado */
+#popupVentasAdmin > div,
+#popupCierreAdmin > div {
+    background: #ffffff !important;
+    border-radius: 16px !important;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3), 0 8px 32px rgba(30, 60, 114, 0.2) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    animation: slideInPopup 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+    overflow: hidden !important;
+}
+
+@keyframes slideInPopup {
+    from {
+        opacity: 0;
+        transform: scale(0.8) translateY(60px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+/* Header del popup mejorado */
+#popupVentasAdmin .modal-header,
+#popupCierreAdmin .modal-header {
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #3b82d6 100%) !important;
+    padding: 24px 28px 18px 28px !important;
+    border-radius: 16px 16px 0 0 !important;
+    position: relative !important;
+    overflow: hidden !important;
+}
+
+#popupVentasAdmin .modal-header::before,
+#popupCierreAdmin .modal-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+    animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+#popupVentasAdmin span[style*="font-size:20px"],
+#popupCierreAdmin span[style*="font-size:20px"] {
+    font-size: 22px !important;
+    font-weight: 700 !important;
+    color: #ffffff !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+    letter-spacing: 0.5px !important;
+    position: relative !important;
+    z-index: 1 !important;
+}
+
+/* Botón cerrar mejorado */
+#popupVentasAdmin button[onclick*="style.display='none'"],
+#popupCierreAdmin button[onclick*="style.display='none'"] {
+    background: rgba(255, 255, 255, 0.2) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    border-radius: 50% !important;
+    width: 36px !important;
+    height: 36px !important;
+    color: #ffffff !important;
+    font-size: 18px !important;
+    font-weight: bold !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    position: relative !important;
+    z-index: 1 !important;
+}
+
+#popupVentasAdmin button[onclick*="style.display='none'"]:hover,
+#popupCierreAdmin button[onclick*="style.display='none'"]:hover {
+    background: rgba(255, 255, 255, 0.3) !important;
+    transform: rotate(90deg) scale(1.1) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Contenido del popup */
+#popupVentasAdmin > div > div:last-child,
+#popupCierreAdmin > div > div:last-child {
+    padding: 28px !important;
+    background: linear-gradient(135deg, #f8fafe 0%, #ffffff 100%) !important;
+}
+
+/* Mensaje "No hay ventas" mejorado */
+#popupVentasAdmin td[colspan="8"] {
+    background: linear-gradient(135deg, #fee2e2 0%, #fef2f2 100%) !important;
+    color: #dc2626 !important;
+    padding: 32px 20px !important;
+    text-align: center !important;
+    font-weight: 600 !important;
+    font-size: 16px !important;
+    border-radius: 8px !important;
+    border: 1px solid rgba(220, 38, 38, 0.2) !important;
+}
+
+/* Botón Volver mejorado */
+#popupVentasAdmin button[style*="background:#204080"],
+#popupCierreAdmin button[style*="background:#204080"] {
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%) !important;
+    border: none !important;
+    border-radius: 10px !important;
+    padding: 12px 28px !important;
+    color: #ffffff !important;
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    box-shadow: 0 4px 15px rgba(30, 60, 114, 0.3) !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+}
+
+#popupVentasAdmin button[style*="background:#204080"]:hover,
+#popupCierreAdmin button[style*="background:#204080"]:hover {
+    background: linear-gradient(135deg, #2a5298 0%, #3b82d6 100%) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 20px rgba(30, 60, 114, 0.4) !important;
+}
+
+#popupVentasAdmin button[style*="background:#204080"]:active,
+#popupCierreAdmin button[style*="background:#204080"]:active {
+    transform: translateY(0) !important;
+    box-shadow: 0 2px 8px rgba(30, 60, 114, 0.3) !important;
+}
+
+/* Imagen del cierre mejorada */
+#popupCierreAdmin img[alt="Foto Activación"] {
+    border-radius: 12px !important;
+    border: 3px solid #e3f2fd !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1), 0 2px 8px rgba(30, 60, 114, 0.15) !important;
+    transition: all 0.3s ease !important;
+    max-width: 350px !important;
+    max-height: 350px !important;
+}
+
+#popupCierreAdmin img[alt="Foto Activación"]:hover {
+    transform: scale(1.02) !important;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15), 0 4px 12px rgba(30, 60, 114, 0.2) !important;
+}
+
+/* Tabla de cierre mejorada */
+#popupCierreAdmin table {
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+    border-radius: 12px !important;
+    overflow: hidden !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08) !important;
+    margin-bottom: 24px !important;
+}
+
+#popupCierreAdmin table th {
+    background: linear-gradient(135deg, #305fbf 0%, #4dabf7 100%) !important;
+    color: #ffffff !important;
+    padding: 16px 12px !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+}
+
+#popupCierreAdmin table td {
+    padding: 16px 12px !important;
+    background: #ffffff !important;
+    color: #2c3e50 !important;
+    font-size: 14px !important;
+    border-bottom: 1px solid rgba(220, 225, 232, 0.3) !important;
+}
+
+/* Indicador de carga */
+.loading-spinner {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: #ffffff;
+    animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Responsive para dispositivos móviles */
+@media (max-width: 768px) {
+    #popupVentasAdmin > div,
+    #popupCierreAdmin > div {
+        margin: 20px !important;
+        max-width: calc(100vw - 40px) !important;
+        max-height: calc(100vh - 40px) !important;
+    }
+    
+    .tabla-ventas th,
+    .tabla-ventas td {
+        padding: 8px 6px !important;
+        font-size: 12px !important;
+    }
+    
+    #popupVentasAdmin span[style*="font-size:20px"],
+    #popupCierreAdmin span[style*="font-size:20px"] {
+        font-size: 18px !important;
+    }
+}
+
+/* === EFECTOS ADICIONALES PARA UNA MEJOR EXPERIENCIA === */
+
+/* Efecto de entrada para los popups */
+#popupVentasAdmin.show,
+#popupCierreAdmin.show {
+    animation: modalShow 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+}
+
+@keyframes modalShow {
+    0% {
+        opacity: 0;
+        backdrop-filter: blur(0px);
+    }
+    100% {
+        opacity: 1;
+        backdrop-filter: blur(4px);
+    }
+}
+
+/* Efecto glow para elementos importantes */
+.tabla-ventas tfoot .total-valor {
+    text-shadow: 0 0 10px rgba(40, 167, 69, 0.3) !important;
+}
+
+/* Mejora de accesibilidad - Focus states */
+#popupVentasAdmin button:focus,
+#popupCierreAdmin button:focus {
+    outline: 3px solid rgba(30, 60, 114, 0.5) !important;
+    outline-offset: 2px !important;
+}
+
+/* Indicador de datos vacíos mejorado */
+.empty-data-message {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 40px 20px !important;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
+    border-radius: 12px !important;
+    border: 2px dashed #dee2e6 !important;
+    color: #6c757d !important;
+    font-size: 16px !important;
+    font-weight: 500 !important;
+}
+
+.empty-data-message::before {
+    content: "📋" !important;
+    font-size: 48px !important;
+    margin-bottom: 12px !important;
+    opacity: 0.5 !important;
+}
+
+/* Scrollbar personalizado para el contenido del popup */
+#popupVentasAdmin > div > div:last-child,
+#popupCierreAdmin > div > div:last-child {
+    scrollbar-width: thin !important;
+    scrollbar-color: rgba(30, 60, 114, 0.3) transparent !important;
+}
+
+#popupVentasAdmin > div > div:last-child::-webkit-scrollbar,
+#popupCierreAdmin > div > div:last-child::-webkit-scrollbar {
+    width: 8px !important;
+}
+
+#popupVentasAdmin > div > div:last-child::-webkit-scrollbar-track,
+#popupCierreAdmin > div > div:last-child::-webkit-scrollbar-track {
+    background: transparent !important;
+}
+
+#popupVentasAdmin > div > div:last-child::-webkit-scrollbar-thumb,
+#popupCierreAdmin > div > div:last-child::-webkit-scrollbar-thumb {
+    background: rgba(30, 60, 114, 0.3) !important;
+    border-radius: 4px !important;
+}
+
+#popupVentasAdmin > div > div:last-child::-webkit-scrollbar-thumb:hover,
+#popupCierreAdmin > div > div:last-child::-webkit-scrollbar-thumb:hover {
+    background: rgba(30, 60, 114, 0.5) !important;
+}
+
+/* Animación de carga para las imágenes */
+#popupCierreAdmin img[alt="Foto Activación"] {
+    opacity: 0 !important;
+    animation: fadeInImage 0.6s ease-out 0.3s forwards !important;
+}
+
+@keyframes fadeInImage {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Mejora visual para textos largos en observaciones */
+#popupCierreAdmin td[style*="observaciones"] {
+    word-wrap: break-word !important;
+    max-width: 300px !important;
+    line-height: 1.5 !important;
+}
+
+/* Efecto de transición suave para cerrar popup */
+#popupVentasAdmin.hiding,
+#popupCierreAdmin.hiding {
+    animation: modalHide 0.2s ease-out forwards !important;
+}
+
+@keyframes modalHide {
+    from {
+        opacity: 1;
+        backdrop-filter: blur(4px);
+    }
+    to {
+        opacity: 0;
+        backdrop-filter: blur(0px);
+    }
+}
