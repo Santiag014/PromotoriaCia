@@ -2,8 +2,15 @@
 function cargarInfoPuntoVenta(id_punto_venta) {
     if (!id_punto_venta) return;
 
-    // Mostrar indicador de carga
-    if (typeof mostrarCargando === 'function') mostrarCargando();
+    // Mostrar indicador de carga simple
+    const spinner = document.getElementById('loadingSpinner');
+    if (spinner) {
+        const messageElement = document.getElementById('loadingMessage');
+        if (messageElement) {
+            messageElement.textContent = 'Cargando punto de venta...';
+        }
+        spinner.style.display = 'flex';
+    }
 
     // Realizar una petición AJAX para obtener los datos del punto de venta
     fetch(`../../Backend/FuncionalidadPHP/Administrador/get_info_punto_venta.php?id_punto_venta=${id_punto_venta}`)
@@ -102,5 +109,10 @@ function cargarInfoPuntoVenta(id_punto_venta) {
         .finally(() => {
             // Ocultar indicador de carga
             if (typeof ocultarCargando === 'function') ocultarCargando();
+            // También ocultar cualquier spinner que pueda estar activo
+            const spinner = document.getElementById('loadingSpinner');
+            if (spinner) {
+                spinner.style.display = 'none';
+            }
         });
 }

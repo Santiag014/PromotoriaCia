@@ -65,7 +65,8 @@ async function cargarDatos() {
         return;
     }
     
-    mostrarCargandoTabla();
+    // Usar la función de carga más simple para evitar conflictos
+    mostrarCargando();
     try {
         // Verificar si estamos en la página de administrador
         if (!document.getElementById('formTurnos')) {
@@ -76,18 +77,17 @@ async function cargarDatos() {
         // Ejecutar cada carga por separado para que si una falla, las otras continúen
         const cargas = [];
         
-        // Actualizar progreso manualmente para cada paso
-        actualizarProgreso(25, 'Cargando promotoras...');
+        console.log('Cargando promotoras...');
         if (typeof cargarPromotoras === 'function') {
             cargas.push(cargarPromotoras().catch(e => console.error("Error al cargar promotoras:", e)));
         }
         
-        actualizarProgreso(50, 'Cargando puntos de venta...');
+        console.log('Cargando puntos de venta...');
         if (typeof cargarPuntosVenta === 'function') {
             cargas.push(cargarPuntosVenta().catch(e => console.error("Error al cargar puntos de venta:", e)));
         }
         
-        actualizarProgreso(75, 'Cargando asesores comerciales...');
+        console.log('Cargando asesores comerciales...');
         if (typeof cargarAsesores === 'function') {
             cargas.push(cargarAsesores().catch(e => console.error("Error al cargar asesores:", e)));
         }
@@ -96,7 +96,7 @@ async function cargarDatos() {
             await Promise.all(cargas);
         }
         
-        actualizarProgreso(95, 'Configurando interfaz...');
+        console.log('Configurando interfaz...');
         
         // Marcar los datos como cargados para evitar cargas duplicadas
         datosYaCargados = true;
@@ -125,15 +125,29 @@ async function cargarDatos() {
                 });
             });
             
-            actualizarProgreso(100, 'Datos cargados exitosamente');
+            console.log('Datos cargados exitosamente');
         }, 100);
     } catch (error) {
         console.error("Error al cargar los datos:", error);
         // alert("Hubo un error al cargar los datos. Por favor, intente de nuevo.");
     } finally {
+        // Asegurar que siempre se oculte el loading - Versión mejorada
         setTimeout(() => {
             ocultarCargando();
-        }, 800);
+            // También ocultar cualquier otro loading que pueda estar activo
+            const spinner = document.getElementById('loadingSpinner');
+            if (spinner) {
+                spinner.style.display = 'none';
+                spinner.style.visibility = 'hidden';
+            }
+            
+            // Forzar ocultado de todos los elementos de carga posibles
+            const allSpinners = document.querySelectorAll('.loading-spinner, #popupLoader, .spinner');
+            allSpinners.forEach(s => {
+                s.style.display = 'none';
+                s.style.visibility = 'hidden';
+            });
+        }, 500); // Reducir tiempo de espera
     }
 }
 
@@ -234,12 +248,8 @@ document.addEventListener('DOMContentLoaded', function() {
 // Función para cargar todos los puntos de venta
 async function cargarPuntosVenta() {
     try {
-        mostrarCargandoConProgreso('Cargando puntos de venta...', 'processing', [
-            { message: 'Conectando con el servidor...', percent: 20 },
-            { message: 'Obteniendo puntos de venta...', percent: 60 },
-            { message: 'Configurando lista...', percent: 90 },
-            { message: 'Puntos de venta cargados', percent: 100 }
-        ]);
+        // Usar solo el loading simple sin porcentajes
+        mostrarCargando();
         
         const response = await fetch(`../../Backend/FuncionalidadPHP/Administrador/get_puntos_venta.php`);
         const data = await response.json();
@@ -435,16 +445,13 @@ formTurnos.addEventListener('submit', async (e) => {
     }
 
     try {
-        mostrarCargandoGuardarTurno();
+        // Usar solo el loading simple
+        mostrarCargando();
         
         const response = await fetch('../../Backend/FuncionalidadPHP/Administrador/guardar_turno.php', {
             method: 'POST',
             body: formData
         });
-
-        // Actualizar progreso mientras se procesa
-        setTimeout(() => actualizarProgreso(60, 'Enviando datos al servidor...'), 300);
-        setTimeout(() => actualizarProgreso(85, 'Procesando en base de datos...'), 600);
 
         let result;
         try {
@@ -457,15 +464,12 @@ formTurnos.addEventListener('submit', async (e) => {
         }
 
         if (response.ok && result && result.success) {
-            actualizarProgreso(100, 'Turno guardado exitosamente');
-            setTimeout(() => {
-                alert('Turno guardado con éxito.');
-                cerrarModal();
-                // Recargar la tabla automáticamente
-                if (typeof cargarDatosTabla === 'function') {
-                    cargarDatosTabla();
-                }
-            }, 800);
+            alert('Turno guardado con éxito.');
+            cerrarModal();
+            // Recargar la tabla automáticamente
+            if (typeof cargarDatosTabla === 'function') {
+                cargarDatosTabla();
+            }
         } else {
             // Construir un mensaje de error más detallado
             let mensajeError = `Error al guardar el turno: ${result && result.error ? result.error : 'Error desconocido'}`;
@@ -490,19 +494,56 @@ formTurnos.addEventListener('submit', async (e) => {
         console.error('Error al guardar el turno:', error);
         alert('Hubo un error al procesar su solicitud. Por favor, revise la consola para más detalles e intente de nuevo.');
     } finally {
+        // Asegurar que siempre se oculte el loading
         setTimeout(() => {
             ocultarCargando();
-        }, 1000);
+            // También asegurar que el spinner esté oculto
+            const spinner = document.getElementById('loadingSpinner');
+            if (spinner) {
+                spinner.style.display = 'none';
+            }
+        }, 500); // Reducir tiempo
     }
 });
 
 // Funciones para mostrar y ocultar el indicador de carga
-function mostrarCargando() {
-    document.getElementById('loadingSpinner').style.display = 'flex';
+function mostrarCargando(message = 'Cargando...') {
+    if (window.LoadingManager && window.LoadingManager.getInstance) {
+        window.LoadingManager.getInstance().show('loadingSpinner', message);
+    } else {
+        const spinner = document.getElementById('loadingSpinner');
+        const loadingMessage = document.getElementById('loadingMessage');
+        if (spinner) {
+            spinner.style.display = 'flex';
+            spinner.style.visibility = 'visible';
+        }
+        if (loadingMessage && message) {
+            loadingMessage.textContent = message;
+        }
+    }
 }
 
 function ocultarCargando() {
-    document.getElementById('loadingSpinner').style.display = 'none';
+    if (window.LoadingManager && window.LoadingManager.getInstance) {
+        window.LoadingManager.getInstance().hide();
+    } else {
+        const spinner = document.getElementById('loadingSpinner');
+        const loadingMessage = document.getElementById('loadingMessage');
+        if (spinner) {
+            spinner.style.display = 'none';
+            spinner.style.visibility = 'hidden';
+        }
+        if (loadingMessage) {
+            loadingMessage.textContent = 'Cargando...';
+        }
+        
+        // Forzar ocultado de todos los elementos de carga posibles
+        const allSpinners = document.querySelectorAll('.loading-spinner, #popupLoader, .spinner');
+        allSpinners.forEach(s => {
+            s.style.display = 'none';
+            s.style.visibility = 'hidden';
+        });
+    }
 }
 
 // Establecer fecha mínima para el campo de fecha de actividad (hoy en adelante)

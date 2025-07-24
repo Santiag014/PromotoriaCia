@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test de Rendimiento - PromotoriaCia</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-item {
+            border: 1px solid #ddd;
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 5px;
+            background: #f9f9f9;
+        }
+        .btn {
+            background: #007bff;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .btn:hover { background: #0056b3; }
+        .success { color: #28a745; font-weight: bold; }
+        .error { color: #dc3545; font-weight: bold; }
+        .warning { color: #ffc107; font-weight: bold; }
+        .loading { color: #6c757d; }
+        .results {
+            margin-top: 10px;
+            padding: 10px;
+            background: #e9ecef;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Test de Rendimiento - PromotoriaCia</h1>
+        <p>Use estos tests para verificar el rendimiento de la aplicación después de las optimizaciones.</p>
+        
+        <div class="test-item">
+            <h3>📊 Test de Carga de Datos del Administrador</h3>
+            <button class="btn" onclick="testAdminData()">Probar Carga Admin</button>
+            <div id="adminResults" class="results" style="display:none;"></div>
+        </div>
+        
+        <div class="test-item">
+            <h3>👥 Test de Carga de Promotor</h3>
+            <button class="btn" onclick="testPromotorData()">Probar Carga Promotor</button>
+            <div id="promotorResults" class="results" style="display:none;"></div>
+        </div>
+        
+        <div class="test-item">
+            <h3>🏪 Test de Carga de Puntos de Venta</h3>
+            <button class="btn" onclick="testPuntosVenta()">Probar Puntos de Venta</button>
+            <div id="pdvResults" class="results" style="display:none;"></div>
+        </div>
+        
+        <div class="test-item">
+            <h3>🤝 Test de Carga de Asesores</h3>
+            <button class="btn" onclick="testAsesores()">Probar Asesores</button>
+            <div id="asesoresResults" class="results" style="display:none;"></div>
+        </div>
+        
+        <div class="test-item">
+            <h3>⚡ Test Completo de Rendimiento</h3>
+            <button class="btn" onclick="testCompleto()">Ejecutar Test Completo</button>
+            <div id="completoResults" class="results" style="display:none;"></div>
+        </div>
+        
+        <div class="test-item">
+            <h3>📈 Estadísticas de Red</h3>
+            <div id="networkStats" class="results"></div>
+        </div>
+    </div>
+
+    <script>
+        let estadisticas = {
+            tests: [],
+            tiempoTotal: 0
+        };
+
+        function log(elementId, message, type = 'info') {
+            const element = document.getElementById(elementId);
+            element.style.display = 'block';
+            const timestamp = new Date().toLocaleTimeString();
+            const className = type === 'success' ? 'success' : type === 'error' ? 'error' : type === 'warning' ? 'warning' : 'loading';
+            element.innerHTML += `<div class="${className}">[${timestamp}] ${message}</div>`;
+            element.scrollTop = element.scrollHeight;
+        }
+
+        function clearLog(elementId) {
+            const element = document.getElementById(elementId);
+            element.innerHTML = '';
+        }
+
+        async function testEndpoint(url, nombre, resultElementId) {
+            clearLog(resultElementId);
+            log(resultElementId, `Iniciando test de ${nombre}...`, 'loading');
+            
+            const inicio = performance.now();
+            
+            try {
+                const response = await fetch(url);
+                const fin = performance.now();
+                const tiempo = Math.round(fin - inicio);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const data = await response.json();
+                const tamaño = new Blob([JSON.stringify(data)]).size;
+                const registros = Array.isArray(data) ? data.length : 'N/A';
+                
+                log(resultElementId, `✅ ${nombre} completado exitosamente`, 'success');
+                log(resultElementId, `⏱️ Tiempo: ${tiempo}ms`);
+                log(resultElementId, `📊 Registros: ${registros}`);
+                log(resultElementId, `💾 Tamaño: ${(tamaño / 1024).toFixed(2)} KB`);
+                log(resultElementId, `🚀 Velocidad: ${registros > 0 ? Math.round(registros / (tiempo / 1000)) : 'N/A'} registros/segundo`);
+                
+                estadisticas.tests.push({
+                    nombre,
+                    tiempo,
+                    registros,
+                    tamaño,
+                    exito: true
+                });
+                
+                return { tiempo, registros, tamaño };
+                
+            } catch (error) {
+                const fin = performance.now();
+                const tiempo = Math.round(fin - inicio);
+                
+                log(resultElementId, `❌ Error en ${nombre}: ${error.message}`, 'error');
+                log(resultElementId, `⏱️ Tiempo hasta error: ${tiempo}ms`);
+                
+                estadisticas.tests.push({
+                    nombre,
+                    tiempo,
+                    error: error.message,
+                    exito: false
+                });
+                
+                throw error;
+            }
+        }
+
+        async function testAdminData() {
+            await testEndpoint('Backend/FuncionalidadPHP/Administrador/get_data_tabla.php', 'Datos Admin', 'adminResults');
+        }
+
+        async function testPromotorData() {
+            await testEndpoint('Backend/FuncionalidadPHP/Promotor/get_data_promotor.php', 'Datos Promotor', 'promotorResults');
+        }
+
+        async function testPuntosVenta() {
+            await testEndpoint('Backend/FuncionalidadPHP/Administrador/get_puntos_venta.php', 'Puntos de Venta', 'pdvResults');
+        }
+
+        async function testAsesores() {
+            await testEndpoint('Backend/FuncionalidadPHP/Administrador/get_asesores.php', 'Asesores', 'asesoresResults');
+        }
+
+        async function testCompleto() {
+            clearLog('completoResults');
+            log('completoResults', 'Iniciando test completo de rendimiento...', 'loading');
+            
+            const inicioCompleto = performance.now();
+            estadisticas.tests = [];
+            
+            const tests = [
+                { func: testAdminData, nombre: 'Admin Data' },
+                { func: testPuntosVenta, nombre: 'Puntos de Venta' },
+                { func: testAsesores, nombre: 'Asesores' }
+            ];
+            
+            let exitosos = 0;
+            let fallidos = 0;
+            
+            for (const test of tests) {
+                try {
+                    log('completoResults', `Ejecutando ${test.nombre}...`, 'loading');
+                    await test.func();
+                    exitosos++;
+                    log('completoResults', `✅ ${test.nombre} completado`, 'success');
+                } catch (error) {
+                    fallidos++;
+                    log('completoResults', `❌ ${test.nombre} falló: ${error.message}`, 'error');
+                }
+                
+                // Pausa pequeña entre tests
+                await new Promise(resolve => setTimeout(resolve, 500));
+            }
+            
+            const finCompleto = performance.now();
+            const tiempoTotal = Math.round(finCompleto - inicioCompleto);
+            
+            log('completoResults', '='.repeat(50));
+            log('completoResults', '📊 RESUMEN DEL TEST COMPLETO', 'success');
+            log('completoResults', `⏱️ Tiempo total: ${tiempoTotal}ms`);
+            log('completoResults', `✅ Tests exitosos: ${exitosos}`);
+            log('completoResults', `❌ Tests fallidos: ${fallidos}`);
+            log('completoResults', `📈 Tasa de éxito: ${Math.round((exitosos / (exitosos + fallidos)) * 100)}%`);
+            
+            estadisticas.tiempoTotal = tiempoTotal;
+            actualizarEstadisticasRed();
+        }
+
+        function actualizarEstadisticasRed() {
+            const element = document.getElementById('networkStats');
+            let html = '<h4>📊 Estadísticas Generales</h4>';
+            
+            if (estadisticas.tests.length > 0) {
+                const tiempoPromedio = estadisticas.tests.reduce((sum, test) => sum + test.tiempo, 0) / estadisticas.tests.length;
+                const registrosTotal = estadisticas.tests.reduce((sum, test) => sum + (test.registros || 0), 0);
+                const exitosos = estadisticas.tests.filter(test => test.exito).length;
+                
+                html += `
+                    <div>⏱️ Tiempo promedio por endpoint: ${Math.round(tiempoPromedio)}ms</div>
+                    <div>📊 Total de registros cargados: ${registrosTotal}</div>
+                    <div>📈 Tasa de éxito: ${Math.round((exitosos / estadisticas.tests.length) * 100)}%</div>
+                    <div>🚀 Rendimiento general: ${tiempoPromedio < 2000 ? 'EXCELENTE' : tiempoPromedio < 5000 ? 'BUENO' : 'NECESITA MEJORAS'}</div>
+                `;
+            } else {
+                html += '<div class="loading">No hay datos disponibles. Ejecute algunos tests primero.</div>';
+            }
+            
+            element.innerHTML = html;
+        }
+
+        // Actualizar estadísticas al cargar la página
+        document.addEventListener('DOMContentLoaded', actualizarEstadisticasRed);
+        
+        // Información del navegador
+        setTimeout(() => {
+            const nav = navigator;
+            const element = document.getElementById('networkStats');
+            element.innerHTML += `
+                <h4>🌐 Información del Navegador</h4>
+                <div>🔍 User Agent: ${nav.userAgent.substring(0, 100)}...</div>
+                <div>💾 Memoria disponible: ${nav.deviceMemory || 'No disponible'} GB</div>
+                <div>🔗 Conexión: ${nav.connection?.effectiveType || 'No disponible'}</div>
+            `;
+        }, 100);
+    </script>
+</body>
+</html>
