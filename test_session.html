@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejemplo - Sistema de Sesión</title>
+    
+    <!-- PASO 1: Incluir los estilos del gestor de sesiones -->
+    <link rel="stylesheet" href="./Backend/FuncionalidadJS/session-styles.css">
+    
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #e9ecef;
+        }
+        
+        .feature-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .test-buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 30px 0;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+        }
+        
+        .btn-warning {
+            background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%);
+            color: #212529;
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+            color: white;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .status {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #007bff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🛡️ Sistema de Gestión de Sesiones</h1>
+            <p>Demostración del sistema de control de sesión por inactividad</p>
+        </div>
+        
+        <div class="feature-box">
+            <h3>✨ Características del Sistema:</h3>
+            <ul>
+                <li>🔍 Verificación automática cada minuto</li>
+                <li>⚠️ Advertencia 5 minutos antes de expirar</li>
+                <li>🚪 Popup elegante al expirar la sesión</li>
+                <li>📱 Totalmente responsive</li>
+                <li>🎯 Compatible con todos los roles</li>
+                <li>🔄 Redirección automática al login</li>
+            </ul>
+        </div>
+        
+        <div class="status">
+            <h4>Estado actual de la sesión:</h4>
+            <p id="sessionStatus">Verificando...</p>
+            <p><strong>Tiempo de sesión:</strong> 30 minutos</p>
+            <p><strong>Última actividad:</strong> <span id="lastActivity">Cargando...</span></p>
+        </div>
+        
+        <div class="test-buttons">
+            <button class="btn btn-primary" onclick="checkSession()">
+                🔍 Verificar Sesión
+            </button>
+            <button class="btn btn-warning" onclick="simulateWarning()">
+                ⚠️ Simular Advertencia
+            </button>
+            <button class="btn btn-danger" onclick="simulateExpired()">
+                🚨 Simular Expiración
+            </button>
+            <button class="btn btn-primary" onclick="cerrarSesion()">
+                🚪 Cerrar Sesión
+            </button>
+        </div>
+        
+        <div class="feature-box">
+            <h3>📋 Instrucciones de Implementación:</h3>
+            <ol>
+                <li>Incluir <code>session-include.php</code> en cada página protegida</li>
+                <li>Los estilos y scripts se cargan automáticamente</li>
+                <li>El sistema funciona inmediatamente sin configuración adicional</li>
+                <li>Compatible con todas las páginas existentes</li>
+            </ol>
+        </div>
+    </div>
+    
+    <!-- PASO 2: Incluir el script del gestor de sesiones -->
+    <script src="./Backend/FuncionalidadJS/session-manager.js"></script>
+    
+    <script>
+        // Funciones de demostración
+        function checkSession() {
+            if (typeof sessionManager !== 'undefined') {
+                sessionManager.checkSessionStatus();
+                updateSessionStatus('Verificación manual realizada');
+            } else {
+                alert('SessionManager no está disponible');
+            }
+        }
+        
+        function simulateWarning() {
+            if (typeof sessionManager !== 'undefined') {
+                sessionManager.showSessionWarning(300000); // 5 minutos
+                updateSessionStatus('Advertencia simulada');
+            }
+        }
+        
+        function simulateExpired() {
+            if (typeof sessionManager !== 'undefined') {
+                sessionManager.showSessionExpiredPopup();
+                updateSessionStatus('Expiración simulada');
+            }
+        }
+        
+        function updateSessionStatus(message) {
+            document.getElementById('sessionStatus').textContent = message;
+            document.getElementById('lastActivity').textContent = new Date().toLocaleString();
+        }
+        
+        // Actualizar estado inicial
+        document.addEventListener('DOMContentLoaded', function() {
+            updateSessionStatus('Sistema activo y monitoreando');
+            
+            // Mostrar información del sessionManager si está disponible
+            if (typeof sessionManager !== 'undefined') {
+                console.log('SessionManager cargado correctamente');
+                console.log('Intervalo de verificación:', sessionManager.checkInterval / 1000, 'segundos');
+                console.log('Tiempo de advertencia:', sessionManager.warningTime / 1000, 'segundos');
+                console.log('Timeout de sesión:', sessionManager.sessionTimeout / 1000, 'segundos');
+            }
+        });
+    </script>
+</body>
+</html>
