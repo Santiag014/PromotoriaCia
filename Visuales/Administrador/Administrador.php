@@ -21,11 +21,13 @@ $adminUserIds = [6, 43, 44]; // Cambia esto a los IDs correspondientes
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="../../Backend/FuncionalidadJS/Administrar/TablaAdmin.js" defer></script>
-    <script src="../../Backend/FuncionalidadJS/Administrar/LoadingProgressManager.js" defer></script>
+    <!-- <script src="../../Backend/FuncionalidadJS/Administrar/LoadingProgressManager.js" defer></script> -->
     <script src="../../Backend/FuncionalidadJS/Administrar/GestionTurnos.js" defer></script>
     <script src="../../Backend/FuncionalidadJS/Administrar/auto_completar_pdv.js" defer></script>
     <script src="../../Backend/FuncionalidadJS/Administrar/PopupEnhancements.js" defer></script>
     <script src="../../Backend/FuncionalidadJS/Administrar/AdminDetailEnhancements.js" defer></script>
+    <script src="../../Backend/FuncionalidadJS/Administrar/LoadingManager.js" defer></script>
+    <script src="../../Backend/FuncionalidadJS/Administrar/PopupCierreFix.js" defer></script>
 </head>
 <body>
     <div id="loadingSpinner" class="loading-spinner" style="display:none;">
@@ -40,18 +42,16 @@ $adminUserIds = [6, 43, 44]; // Cambia esto a los IDs correspondientes
             </div>
             <div class="loading-content">
                 <div class="loading-text">
-                    <span id="loadingMessage">Procesando, por favor espere...</span>
+                    <span id="loadingMessage">Cargando...</span>
                 </div>
-                <div class="progress-container">
-                    <div class="progress-bar">
-                        <div class="progress-fill" id="progressFill"></div>
-                        <div class="progress-text">
-                            <span id="progressPercent">0%</span>
-                        </div>
-                    </div>
+                <!-- Ocultamos la barra de progreso y porcentajes -->
+                <div class="progress-container" style="margin: 20px 0; display: none;">
+                    <div class="progress-fill" id="progressFill"></div>
+                    <div class="progress-text" id="progressPercent">0%</div>
                 </div>
-                <div class="loading-details">
-                    <span id="loadingDetails">Iniciando proceso...</span>
+
+                <div class="loading-details" style="display: none;">
+                    <span id="loadingDetails">Cargando...</span>
                 </div>
             </div>
         </div>

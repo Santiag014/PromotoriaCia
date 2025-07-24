@@ -1,8 +1,16 @@
-# Archivos de configuración sensibles
+# ⚠️ ARCHIVOS CRÍTICOS DE SEGURIDAD ⚠️
+# NUNCA quitar estas líneas - contienen credenciales sensibles
 .env
 .env.local
 .env.production
 .env.staging
+*.env
+
+# Archivos de configuración sensibles adicionales
+config.local.php
+database.config.php
+credentials.json
+secrets.json
 
 # Dependencias de Composer
 /vendor/

@@ -5,7 +5,8 @@
 function loadEnv($path = '.env') {
     // Verificar si el archivo .env existe
     if (!file_exists($path)) {
-        die("Error: No se encontró el archivo .env en la ruta: " . $path);
+        // No fallar, simplemente retornar false para indicar que no se cargó
+        return false;
     }
     
     // Leer el archivo línea por línea
@@ -36,6 +37,8 @@ function loadEnv($path = '.env') {
             putenv("$key=$value");
         }
     }
+    
+    return true; // Indicar que se cargó exitosamente
 }
 
 /**

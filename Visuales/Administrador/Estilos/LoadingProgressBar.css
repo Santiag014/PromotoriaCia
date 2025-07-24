@@ -10,7 +10,7 @@
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    background: linear-gradient(135deg, rgba(30, 60, 114, 0.95) 0%, rgba(42, 82, 152, 0.95) 50%, rgba(59, 130, 214, 0.95) 100%) !important;
+    background: linear-gradient(135deg, rgba(38, 40, 44, 0.95) 0%, rgba(48, 51, 57, 0.425) 50%, rgba(19, 20, 20, 0.95) 100%) !important;
     backdrop-filter: blur(15px) !important;
     animation: fadeInLoading 0.4s ease-out !important;
     margin: 0 !important;
