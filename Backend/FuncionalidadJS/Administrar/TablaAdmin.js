@@ -72,26 +72,28 @@ document.addEventListener('DOMContentLoaded', function() {
             const btnCierre = document.getElementById('btnVerCierreAdmin');
             const logDiv = document.getElementById('adminDetalleLog');
             if (btnVentas && btnCierre) {
-                // if (item.estado_ventas === 'Sin Ventas') {
-                //     btnVentas.disabled = true;
-                //     btnVentas.style.opacity = 0.5;
-                //     btnVentas.title = "No hay ventas registradas";
-                //     btnCierre.disabled = true;
-                //     btnCierre.style.opacity = 0.5;
-                //     btnCierre.title = "No hay cierre registrado";
-                //     if (logDiv) {
-                //         logDiv.innerHTML = '<p style="color:#c0392b;font-weight:bold;margin:10px 0 0 0;">No hay ventas ni cierre registrados aún.</p>';
-                //     }
-                // } else {
-                //     btnVentas.disabled = false;
-                //     btnVentas.style.opacity = 1;
-                //     btnVentas.title = "";
-                //     btnCierre.disabled = false;
-                //     btnCierre.style.opacity = 1;
-                //     btnCierre.title = "";
-                //     if (logDiv) logDiv.innerHTML = '';
-                // }
+                if (item.estado_ventas === 'Sin Ventas') {
+                    btnVentas.disabled = true;
+                    btnVentas.style.opacity = 0.5;
+                    btnVentas.title = "No hay ventas registradas";
+                    btnCierre.disabled = true;
+                    btnCierre.style.opacity = 0.5;
+                    btnCierre.title = "No hay cierre registrado";
+                    if (logDiv) {
+                        logDiv.innerHTML = '<p style="color:#c0392b;font-weight:bold;margin:10px 0 0 0;">No hay ventas ni cierre registrados aún.</p>';
+                    }
+                } else {
+                    btnVentas.disabled = false;
+                    btnVentas.style.opacity = 1;
+                    btnVentas.title = "";
+                    btnCierre.disabled = false;
+                    btnCierre.style.opacity = 1;
+                    btnCierre.title = "";
+                    if (logDiv) logDiv.innerHTML = '';
+                }
             }
+            // Limpia log
+            if (document.getElementById('adminDetalleLog')) document.getElementById('adminDetalleLog').innerHTML = '';
             // Muestra el popup
             if (document.getElementById('adminDetallePopup')) document.getElementById('adminDetallePopup').style.display = 'flex';
         });
@@ -771,18 +773,35 @@ window.cargarTablaAdmin = cargarTablaAdmin;
             // URL original
             possibleUrls.push(originalUrl);
             
-            // Ruta desde el root del proyecto
-            if (originalUrl.includes('Storage/')) {
-                const storagePart = originalUrl.substring(originalUrl.indexOf('Storage/'));
-                possibleUrls.push(window.location.origin + '/PromotoriaCia/' + storagePart);
-                possibleUrls.push(window.location.origin + '/' + storagePart);
+            // Limpiar la URL de posibles caracteres problemáticos
+            const cleanUrl = originalUrl.replace(/\\/g, '/');
+            
+            // Si contiene Storage/, intentar diferentes rutas
+            if (cleanUrl.includes('Storage/')) {
+                const storagePart = cleanUrl.substring(cleanUrl.indexOf('Storage/'));
+                
+                // Diferentes variaciones de ruta desde el archivo actual (en Visuales/Administrador/)
                 possibleUrls.push('../../' + storagePart);
+                possibleUrls.push('../../../' + storagePart);
+                possibleUrls.push(window.location.origin + '/' + storagePart);
+                possibleUrls.push(window.location.origin + '/PromotoriaCia/' + storagePart);
+                
+                // Ruta relativa desde la raíz del proyecto
+                const pathSegments = window.location.pathname.split('/');
+                const projectRoot = pathSegments.slice(0, -2).join('/'); // Remover las últimas 2 partes (Visuales/Administrador)
+                possibleUrls.push(projectRoot + '/' + storagePart);
+            }
+            
+            // Si es una ruta que empieza con Storage/, agregarla directamente
+            if (cleanUrl.startsWith('Storage/')) {
+                possibleUrls.push('../../' + cleanUrl);
+                possibleUrls.push('../../../' + cleanUrl);
             }
             
             // Función recursiva para probar URLs
             function tryNextUrl(index) {
                 if (index >= possibleUrls.length) {
-                    console.error('No se pudo encontrar la imagen en ninguna ruta:', possibleUrls);
+                    console.error('❌ No se pudo encontrar la imagen en ninguna ruta:', possibleUrls);
                     callback(null);
                     return;
                 }
@@ -800,6 +819,7 @@ window.cargarTablaAdmin = cargarTablaAdmin;
                     tryNextUrl(index + 1);
                 };
                 
+                console.log('🔄 Probando URL:', url);
                 img.src = url;
             }
             
@@ -808,18 +828,21 @@ window.cargarTablaAdmin = cargarTablaAdmin;
 
         // Popup de Cierre con estilo
         function mostrarPopupCierreAdmin(cierre) {
-            console.log('Datos de cierre recibidos:', cierre);
+            console.log('🔧 Datos de cierre recibidos:', cierre);
             
             let popup = document.getElementById('popupCierreAdmin');
             // Corrige la ruta de la foto si es necesario
             let fotoUrl = cierre.foto_activacion || '';
             
-            console.log('URL original de la foto:', fotoUrl);
+            console.log('📸 URL original de la foto:', fotoUrl);
+            console.log('🌐 URL actual de la página:', window.location.href);
+            console.log('📍 Base URL:', window.location.origin);
+            console.log('🗂️ Pathname:', window.location.pathname);
             
             // Usar la función auxiliar para encontrar la URL correcta
             findCorrectImageUrl(fotoUrl, function(correctUrl) {
                 const finalFotoUrl = correctUrl;
-                console.log('URL final verificada:', finalFotoUrl);
+                console.log('✅ URL final verificada:', finalFotoUrl);
                 
                 // Continuar con la lógica del popup usando finalFotoUrl
                 renderPopupCierre(popup, finalFotoUrl, cierre);
@@ -854,18 +877,21 @@ window.cargarTablaAdmin = cargarTablaAdmin;
                         </div>
                         <div style="padding:28px;background:linear-gradient(135deg, #f8fafe 0%, #ffffff 100%);overflow-y:auto;max-height:calc(90vh - 120px);">
                             <div style="text-align:center;margin-bottom:24px;padding:20px;background:linear-gradient(135deg, #f0f7ff 0%, #e3f2fd 100%);border-radius:12px;border:1px solid rgba(30,60,114,0.1);">
-                                ${
-                                    fotoUrl
-                                        ? `<img src="${fotoUrl}" alt="Foto Activación" style="max-width:350px;max-height:350px;border-radius:12px;border:3px solid #e3f2fd;box-shadow:0 8px 32px rgba(0,0,0,0.1), 0 2px 8px rgba(30,60,114,0.15);transition:all 0.3s ease;" 
-                                           onerror="this.onerror=null; this.style.display='none'; this.nextElementSibling.style.display='block';" 
-                                           onload="console.log('Imagen cargada exitosamente');"
-                                           onmouseover="this.style.transform='scale(1.02)'" 
-                                           onmouseout="this.style.transform='scale(1)'" />
-                                           <div style="display:none;padding:40px;background:linear-gradient(135deg, #fee2e2 0%, #fef2f2 100%);border-radius:8px;border:1px solid rgba(220,38,38,0.2);">
-                                               <span style="color:#dc2626;font-size:16px;font-weight:600;">❌ Error al cargar la imagen</span>
-                                               <br><small style="color:#7f1d1d;">URL: ${fotoUrl}</small>
-                                           </div>`
-                                        : '<div style="padding:40px;background:linear-gradient(135deg, #fee2e2 0%, #fef2f2 100%);border-radius:8px;border:1px solid rgba(220,38,38,0.2);"><span style="color:#dc2626;font-size:16px;font-weight:600;">📷 No hay foto de activación disponible</span></div>'
+                                ${fotoUrl ? 
+                                    `<div>
+                                        <img src="${fotoUrl}" alt="Foto Activación" 
+                                             style="max-width:350px;max-height:350px;border-radius:12px;border:3px solid #e3f2fd;box-shadow:0 8px 32px rgba(0,0,0,0.1), 0 2px 8px rgba(30,60,114,0.15);transition:all 0.3s ease;" 
+                                             onerror="console.error('Error cargando imagen:', '${fotoUrl}'); this.onerror=null; this.style.display='none'; this.nextElementSibling.style.display='block';" 
+                                             onload="console.log('✅ Imagen cargada exitosamente:', '${fotoUrl}');"
+                                             onmouseover="this.style.transform='scale(1.02)'" 
+                                             onmouseout="this.style.transform='scale(1)'" />
+                                        <div style="display:none;padding:40px;background:linear-gradient(135deg, #fee2e2 0%, #fef2f2 100%);border-radius:8px;border:1px solid rgba(220,38,38,0.2);">
+                                            <span style="color:#dc2626;font-size:16px;font-weight:600;">❌ Error al cargar la imagen</span>
+                                            <br><small style="color:#7f1d1d;">URL: ${fotoUrl}</small>
+                                        </div>
+                                    </div>` 
+                                    : 
+                                    '<div style="padding:40px;background:linear-gradient(135deg, #fee2e2 0%, #fef2f2 100%);border-radius:8px;border:1px solid rgba(220,38,38,0.2);"><span style="color:#dc2626;font-size:16px;font-weight:600;">📷 No hay foto de activación disponible</span></div>'
                                 }
                             </div>
                             <div style="border-radius:12px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.08);background:#fff;margin-bottom:24px;">
@@ -915,17 +941,21 @@ window.cargarTablaAdmin = cargarTablaAdmin;
         // Función para actualizar popup existente
         function updateExistingPopup(popup, fotoUrl, cierre) {
             // Actualizar la imagen
-            let fotoHtml = fotoUrl
-                ? `<img src="${fotoUrl}" alt="Foto Activación" style="max-width:350px;max-height:350px;border-radius:12px;border:3px solid #e3f2fd;box-shadow:0 8px 32px rgba(0,0,0,0.1), 0 2px 8px rgba(30,60,114,0.15);transition:all 0.3s ease;" 
-                   onerror="this.onerror=null; this.style.display='none'; this.nextElementSibling.style.display='block';" 
-                   onload="console.log('Imagen cargada exitosamente');"
-                   onmouseover="this.style.transform='scale(1.02)'" 
-                   onmouseout="this.style.transform='scale(1)'" />
-                   <div style="display:none;padding:40px;background:linear-gradient(135deg, #fee2e2 0%, #fef2f2 100%);border-radius:8px;border:1px solid rgba(220,38,38,0.2);">
-                       <span style="color:#dc2626;font-size:16px;font-weight:600;">❌ Error al cargar la imagen</span>
-                       <br><small style="color:#7f1d1d;">URL: ${fotoUrl}</small>
-                   </div>`
-                : '<div style="padding:40px;background:linear-gradient(135deg, #fee2e2 0%, #fef2f2 100%);border-radius:8px;border:1px solid rgba(220,38,38,0.2);"><span style="color:#dc2626;font-size:16px;font-weight:600;">📷 No hay foto de activación disponible</span></div>';
+            let fotoHtml = fotoUrl ?
+                `<div>
+                    <img src="${fotoUrl}" alt="Foto Activación" 
+                         style="max-width:350px;max-height:350px;border-radius:12px;border:3px solid #e3f2fd;box-shadow:0 8px 32px rgba(0,0,0,0.1), 0 2px 8px rgba(30,60,114,0.15);transition:all 0.3s ease;" 
+                         onerror="console.error('Error cargando imagen:', '${fotoUrl}'); this.onerror=null; this.style.display='none'; this.nextElementSibling.style.display='block';" 
+                         onload="console.log('✅ Imagen cargada exitosamente:', '${fotoUrl}');"
+                         onmouseover="this.style.transform='scale(1.02)'" 
+                         onmouseout="this.style.transform='scale(1)'" />
+                    <div style="display:none;padding:40px;background:linear-gradient(135deg, #fee2e2 0%, #fef2f2 100%);border-radius:8px;border:1px solid rgba(220,38,38,0.2);">
+                        <span style="color:#dc2626;font-size:16px;font-weight:600;">❌ Error al cargar la imagen</span>
+                        <br><small style="color:#7f1d1d;">URL: ${fotoUrl}</small>
+                    </div>
+                </div>` 
+                :
+                '<div style="padding:40px;background:linear-gradient(135deg, #fee2e2 0%, #fef2f2 100%);border-radius:8px;border:1px solid rgba(220,38,38,0.2);"><span style="color:#dc2626;font-size:16px;font-weight:600;">📷 No hay foto de activación disponible</span></div>';
             
             const imageContainer = popup.querySelector('div[style*="text-align:center"]');
             if (imageContainer) {
@@ -948,122 +978,22 @@ window.cargarTablaAdmin = cargarTablaAdmin;
         async function verCierreAdmin() {
             if (!adminDetalleData) return;
             try {
-                const resp = await fetch(`/Backend/FuncionalidadPHP/Administrador/get_cierre_turno.php?id_turno=${adminDetalleData.id}`);
-                const data = await resp.json();
-                if (document.getElementById('adminDetallePopup')) document.getElementById('adminDetallePopup').style.display = 'none';
-                mostrarPopupCierreAdmin(data);
-            } catch (e) {
-                console.error('Error al cargar cierre:', e);
-                alert('Error al cargar cierre.');
-            }
-        }
-                popup = document.createElement('div');
-                popup.id = 'popupCierreAdmin';
-                popup.style.position = 'fixed';
-                popup.style.top = '0';
-                popup.style.left = '0';
-                popup.style.width = '100vw';
-                popup.style.height = '100vh';
-                popup.style.background = 'rgba(0,0,0,0.85)';
-                popup.style.display = 'flex';
-                popup.style.alignItems = 'center';
-                popup.style.justifyContent = 'center';
-                popup.style.zIndex = '9999';
-                popup.innerHTML = `
-                    <div style="background:#fff;border-radius:16px;min-width:420px;max-width:95vw;max-height:90vh;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.3);">
-                        <div class="modal-header" style="background:linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #3b82d6 100%);color:#fff;padding:24px 28px 18px 28px;border-radius:16px 16px 0 0;display:flex;align-items:center;justify-content:space-between;">
-                            <span style="font-size:22px;font-weight:700;color:#ffffff;text-shadow:0 2px 4px rgba(0,0,0,0.3);letter-spacing:0.5px;">
-                                📸 Cierre del Registro
-                            </span>
-                            <button onclick="document.getElementById('popupCierreAdmin').style.display='none';if(document.getElementById('adminDetallePopup'))document.getElementById('adminDetallePopup').style.display='flex';" 
-                                    style="background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.3);border-radius:50%;width:36px;height:36px;color:#fff;font-size:18px;cursor:pointer;transition:all 0.3s ease;display:flex;align-items:center;justify-content:center;">
-                                ✕
-                            </button>
-                        </div>
-                        <div style="padding:28px;background:linear-gradient(135deg, #f8fafe 0%, #ffffff 100%);overflow-y:auto;max-height:calc(90vh - 120px);">
-                            <div style="text-align:center;margin-bottom:24px;padding:20px;background:linear-gradient(135deg, #f0f7ff 0%, #e3f2fd 100%);border-radius:12px;border:1px solid rgba(30,60,114,0.1);">
-                                ${
-                                    fotoUrl
-                                        ? `<img src="${fotoUrl}" alt="Foto Activación" style="max-width:350px;max-height:350px;border-radius:12px;border:3px solid #e3f2fd;box-shadow:0 8px 32px rgba(0,0,0,0.1), 0 2px 8px rgba(30,60,114,0.15);transition:all 0.3s ease;" 
-                                           onerror="this.onerror=null; this.style.display='none'; this.nextElementSibling.style.display='block';" 
-                                           onload="console.log('Imagen cargada exitosamente');"
-                                           onmouseover="this.style.transform='scale(1.02)'" 
-                                           onmouseout="this.style.transform='scale(1)'" />
-                                           <div style="display:none;padding:40px;background:linear-gradient(135deg, #fee2e2 0%, #fef2f2 100%);border-radius:8px;border:1px solid rgba(220,38,38,0.2);">
-                                               <span style="color:#dc2626;font-size:16px;font-weight:600;">❌ Error al cargar la imagen</span>
-                                               <br><small style="color:#7f1d1d;">URL: ${fotoUrl}</small>
-                                           </div>`
-                                        : '<div style="padding:40px;background:linear-gradient(135deg, #fee2e2 0%, #fef2f2 100%);border-radius:8px;border:1px solid rgba(220,38,38,0.2);"><span style="color:#dc2626;font-size:16px;font-weight:600;">📷 No hay foto de activación disponible</span></div>'
-                                }
-                            </div>
-                            <div style="border-radius:12px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.08);background:#fff;margin-bottom:24px;">
-                                <table style="width:100%;border-collapse:separate;border-spacing:0;">
-                                    <thead>
-                                        <tr style="background:linear-gradient(135deg, #305fbf 0%, #4dabf7 100%);color:#fff;">
-                                            <th style="padding:16px 12px;font-weight:600;font-size:14px;text-transform:uppercase;letter-spacing:0.5px;">Personas Impactadas</th>
-                                            <th style="padding:16px 12px;font-weight:600;font-size:14px;text-transform:uppercase;letter-spacing:0.5px;">Observaciones</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr style="background:#ffffff;">
-                                            <td style="padding:16px 12px;background:#ffffff;color:#2c3e50;font-size:14px;border-bottom:1px solid rgba(220,225,232,0.3);text-align:center;font-weight:600;color:#1e3c72;">${cierre.personas_impactadas || '0'}</td>
-                                            <td style="padding:16px 12px;background:#ffffff;color:#2c3e50;font-size:14px;border-bottom:1px solid rgba(220,225,232,0.3);">${cierre.observaciones_cierre || 'Sin observaciones'}</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div style="text-align:center;">
-                                <button id="btnVolverDetalleCierreAdmin" 
-                                        style="background:linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);color:#fff;padding:12px 28px;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;transition:all 0.3s ease;box-shadow:0 4px 15px rgba(30,60,114,0.3);text-transform:uppercase;letter-spacing:0.5px;">
-                                    ← Volver al Detalle
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                document.body.appendChild(popup);
-            } else {
-                // Corrige la ruta si el popup ya existe
-                let fotoHtml = fotoUrl
-                    ? `<img src="${fotoUrl}" alt="Foto Activación" style="max-width:350px;max-height:350px;border-radius:12px;border:3px solid #e3f2fd;box-shadow:0 8px 32px rgba(0,0,0,0.1), 0 2px 8px rgba(30,60,114,0.15);transition:all 0.3s ease;" 
-                       onerror="this.onerror=null; this.style.display='none'; this.nextElementSibling.style.display='block';" 
-                       onload="console.log('Imagen cargada exitosamente');"
-                       onmouseover="this.style.transform='scale(1.02)'" 
-                       onmouseout="this.style.transform='scale(1)'" />
-                       <div style="display:none;padding:40px;background:linear-gradient(135deg, #fee2e2 0%, #fef2f2 100%);border-radius:8px;border:1px solid rgba(220,38,38,0.2);">
-                           <span style="color:#dc2626;font-size:16px;font-weight:600;">❌ Error al cargar la imagen</span>
-                           <br><small style="color:#7f1d1d;">URL: ${fotoUrl}</small>
-                       </div>`
-                    : '<div style="padding:40px;background:linear-gradient(135deg, #fee2e2 0%, #fef2f2 100%);border-radius:8px;border:1px solid rgba(220,38,38,0.2);"><span style="color:#dc2626;font-size:16px;font-weight:600;">📷 No hay foto de activación disponible</span></div>';
+                console.log('🔄 Solicitando datos de cierre para ID:', adminDetalleData.id);
+                const resp = await fetch(`../../../Backend/FuncionalidadPHP/Administrador/get_cierre_turno.php?id_turno=${adminDetalleData.id}`);
                 
-                const imageContainer = popup.querySelector('div[style*="text-align:center"]');
-                if (imageContainer) {
-                    imageContainer.innerHTML = fotoHtml;
+                if (!resp.ok) {
+                    throw new Error(`HTTP ${resp.status}: ${resp.statusText}`);
                 }
-                popup.querySelector('tbody').innerHTML = `
-                    <tr style="background:#ffffff;">
-                        <td style="padding:16px 12px;background:#ffffff;color:#2c3e50;font-size:14px;border-bottom:1px solid rgba(220,225,232,0.3);text-align:center;font-weight:600;color:#1e3c72;">${cierre.personas_impactadas || '0'}</td>
-                        <td style="padding:16px 12px;background:#ffffff;color:#2c3e50;font-size:14px;border-bottom:1px solid rgba(220,225,232,0.3);">${cierre.observaciones_cierre || 'Sin observaciones'}</td>
-                    </tr>
-                `;
-            }
-            popup.style.display = 'flex';
-            document.getElementById('btnVolverDetalleCierreAdmin').onclick = function() {
-                popup.style.display = 'none';
-                if (document.getElementById('adminDetallePopup')) document.getElementById('adminDetallePopup').style.display = 'flex';
-            };
-        }
-
-        // Nueva función para ver cierre
-        async function verCierreAdmin() {
-            if (!adminDetalleData) return;
-            try {
-                const resp = await fetch(`/Backend/FuncionalidadPHP/Administrador/get_cierre_turno.php?id_turno=${adminDetalleData.id}`);
+                
                 const data = await resp.json();
+                console.log('📋 Datos de cierre recibidos:', data);
+                console.log('📸 URL de foto recibida:', data.foto_activacion);
+                
                 if (document.getElementById('adminDetallePopup')) document.getElementById('adminDetallePopup').style.display = 'none';
                 mostrarPopupCierreAdmin(data);
             } catch (e) {
-                alert('Error al cargar cierre.');
+                console.error('❌ Error al cargar cierre:', e);
+                alert('Error al cargar cierre: ' + e.message);
             }
         }
 
@@ -1074,6 +1004,7 @@ window.cargarTablaAdmin = cargarTablaAdmin;
             const btnCierre = document.getElementById('btnVerCierreAdmin');
             if (btnCierre) btnCierre.onclick = verCierreAdmin;
         });
+
 // Filtros
 function aplicarFiltrosTablaAdmin() {
     const nombrePDV = (document.getElementById('filtroNombrePDV')?.value || '').toLowerCase();

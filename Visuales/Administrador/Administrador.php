@@ -1,5 +1,7 @@
 <?php
 include __DIR__ . "/../../auth.php";
+// Incluir el gestor de sesiones universal
+include __DIR__ . "/../../Backend/FuncionalidadPHP/session-include.php";
 
 $adminUserIds = [6, 43, 44]; // Cambia esto a los IDs correspondientes
 ?>

@@ -1,5 +1,7 @@
 <?php
 include __DIR__ . "/../../auth.php";
+// Incluir el gestor de sesiones universal
+include __DIR__ . "/../../Backend/FuncionalidadPHP/session-include.php";
 ?>
 <!DOCTYPE html>
 <html lang="en">

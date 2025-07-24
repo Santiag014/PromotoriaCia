@@ -1,5 +1,7 @@
 <?php
 include __DIR__ . "/../../auth.php";
+// Incluir el gestor de sesiones universal
+include __DIR__ . "/../../Backend/FuncionalidadPHP/session-include.php";
 session_start();
 // var_dump($_SESSION);
 $rol_usuario = isset($_SESSION['id_rol']) ? $_SESSION['id_rol'] : null;
